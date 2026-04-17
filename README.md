@@ -7,36 +7,12 @@
 
 # ![cui-32x](https://i.imgur.com/PHRIIbS.png) CuoreUI.Winforms
 
-This is a C# .NET Winforms library with **modern** controls, components and forms.
+This is a C# .NET Winforms library with **modern-looking** controls, components and forms.
 
 >[!TIP]
-> Don't be afraid to report problems on the [![image](https://i.imgur.com/rJ9l299.png) Issues](https://github.com/owtysm2/CuoreUI) page! 
+> Don't be afraid to report problems, and suggest new controls and components on the [![image](https://i.imgur.com/rJ9l299.png) Issues](https://github.com/owtysm2/CuoreUI) page! 
 
 > [![image](https://i.imgur.com/rJ9l299.png) The master branch](https://github.com/owtysm2/CuoreUI) is usually ahead of the latest [![NuGet logo](https://i.imgur.com/6aPyVAg.png) NuGet package](https://www.nuget.org/packages/CuoreUI.Winforms/) in terms of changes made.
-
-## 🗿 Why use Cuore
-> CuoreUI Showcases is not out yet.
-
-![CuoreUI Showcases: Message Dialog (UI)](https://i.imgur.com/z0XjHOY.png)
-
-**UI Design**
-
-CuoreUI draws inspiration from web UI designs. Tries to support control animations, blur effects on controls, and rounded forms for a "modern" look.
-
-![CuoreUI binary size in comparison to other libraries](https://i.imgur.com/7yeFZER.png)
-
-**Lightweight**
-*(Data from Early July 2025)*
-
-While smaller in size than other competitors, it still packs similar features due to not being obfuscated and not having a license manager.
-
-![CuoreUI resource usage in "CuoreUI Showcases: Message Dialog" - Windows 10 Task Manager](https://i.imgur.com/9VbO6gK.png)
-
-**Cautious with Resources**
-
-We dispose classes inheriting `IDisposable`, and use memory efficiently.
-
-The UI is drawn with the CPU, so we make sure to optimize that too.
 
 ---
 
@@ -51,11 +27,10 @@ The official NuGet page is called [CuoreUI.Winforms![image](https://i.imgur.com/
 ---
 
 ## 📜 Documentation
-*Documentation, documentation. Ah yes, the documentation..*
+> [!NOTE]
+> The documentation is highly Work-In-Progress
 
-.. We currently don't provide any documentation for the project
-
-There is, however, ongoing work towards writing the docs. 
+The docs are available at https://cuoreui.netlify.app/docs
 
 ---
 
