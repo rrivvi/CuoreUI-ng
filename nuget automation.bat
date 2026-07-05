@@ -4,10 +4,10 @@ SETLOCAL EnableDelayedExpansion
 goto filesExistCheck
 
 :filesExistCheck
-if not exist "CuoreUI.Winforms.nuspec" (
-    echo "CuoreUI.Winforms.nuspec" or "nuget.exe" not found!
+if not exist "CuoreUI-ng.Winforms.nuspec" (
+    echo "CuoreUI-ng.Winforms.nuspec" or "nuget.exe" not found!
 ) else if not exist "nuget.exe" (
-    echo "CuoreUI.Winforms.nuspec" or "nuget.exe" not found!
+    echo "CuoreUI-ng.Winforms.nuspec" or "nuget.exe" not found!
 ) else (
     goto revisionInput
 )
@@ -23,7 +23,7 @@ goto scanNuspec
 :scanNuspec
 set /a lineNum=0
 > tempfile.txt (
-    for /f "usebackq tokens=* delims=" %%x in (CuoreUI.Winforms.nuspec) do (
+    for /f "usebackq tokens=* delims=" %%x in (CuoreUI-ng.Winforms.nuspec) do (
     set /a lineNum+=1
     if !lineNum! equ 5 (
 
@@ -48,6 +48,6 @@ set /a lineNum=0
 )
 )
 
-move tempfile.txt CuoreUI.Winforms.nuspec
+move tempfile.txt CuoreUI-ng.Winforms.nuspec
 
 start "Title" nuget.exe pack

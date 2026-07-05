@@ -1,16 +1,15 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>CuoreUI.Winforms</id>
-    <version>2026.04.25</version>
-    <authors>owtysm</authors>
-    <owners>owtysm</owners>
-    <description>The FREE WinForms UI Controls Library ∙ Stretch WinForms to its modern glory</description>
+    <id>CuoreUI-ng.Winforms</id>
+    <version>2026.07.05</version>
+    <authors>rrvvee</authors>
+    <owners>rrvvee</owners>
+    <description>Fork of the archived CuoreUI.Winforms UI Library ∙ The FREE WinForms UI Controls Library ∙ Stretch WinForms to its modern glory</description>
     <icon>icon.png</icon>
     <license type="expression">Unlicense</license>
     <tags>winforms modern controls ui cui theme winforms-ui ui-library modern-ui fluent-ui flat-ui material-ui custom-controls ui-components</tags>
-    <repository type="git" url="https://github.com/owtysm2/CuoreUI" />
-    <projectUrl>https://cuoreui.netlify.app</projectUrl>
+    <repository type="git" url="https://github.com/rrivvi/CuoreUI-ng" />
     <readme>README.md</readme>
     <dependencies>
     <group targetFramework=".NETFramework4.7.2" />
