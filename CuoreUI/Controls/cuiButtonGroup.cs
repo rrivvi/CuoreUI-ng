@@ -24,6 +24,8 @@ namespace CuoreUI.Controls
             Padding = new Padding(12);
         }
 
+        public event EventHandler CheckedChanged;
+
         private string privateContent = "Your text here!";
 
         [Category("CuoreUI")]
@@ -35,7 +37,7 @@ namespace CuoreUI.Controls
             }
             set
             {
-                privateContent = value;
+                privateContent = value ?? string.Empty;
                 Invalidate();
             }
         }
@@ -181,7 +183,12 @@ namespace CuoreUI.Controls
             }
             set
             {
-                privateChecked = value;
+                if (privateChecked != value)
+                {
+                    privateChecked = value;
+                    CheckedChanged?.Invoke(this, EventArgs.Empty);
+                }
+
                 Invalidate();
             }
         }
@@ -272,7 +279,8 @@ namespace CuoreUI.Controls
             set
             {
                 privateOutlineThickness = Math.Max(value, 0);
-                privatePen.Width = value;
+                privatePen.Width = privateOutlineThickness;
+                Invalidate();
             }
         }
 

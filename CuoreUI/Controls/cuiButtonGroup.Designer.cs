@@ -17,6 +17,12 @@
             {
                 components.Dispose();
             }
+
+            imageAttributes?.Dispose();
+            stringFormat?.Dispose();
+            privateBrush?.Dispose();
+            privatePen?.Dispose();
+
             base.Dispose(disposing);
         }
 

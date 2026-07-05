@@ -33,19 +33,6 @@ namespace CuoreUI.Controls.Charts
             Invalidate();
         }
 
-        public bool hasDuplicate(int[] nums)
-        {
-            Array.Sort(nums);
-            for (int i = 0; i < nums.Length; i++)
-            {
-                if (nums[i] == nums[i - 1])
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         private bool privateGradientBackground = true;
 
         [Browsable(true)]
@@ -484,46 +471,48 @@ namespace CuoreUI.Controls.Charts
 
         private void DrawLabels(Graphics g, int padding, int width, int height)
         {
-            Brush labelBrush = new SolidBrush(DayColor);
+            using (Brush labelBrush = new SolidBrush(DayColor))
+            {
 
-            if (usePercent)
-            {
-                for (int i = 0; i <= 5; i++)
+                if (usePercent)
                 {
-                    float y = padding + height - (i * height / 5);
-                    g.DrawString($"{Math.Round(i * 20 * privateMaxValue / 100, 2)}%", Font, labelBrush, padding - 35, y - 7);
-                }
-            }
-            else
-            {
-                for (int i = 0; i <= 5; i++)
-                {
-                    float y = padding + height - (i * height / 5);
-                    float value = i * privateMaxValue / 5;
-                    g.DrawString($"{Math.Round(value, 2)}", Font, labelBrush, padding - 35, y - 7);
-                }
-            }
-
-            if (privateCustomXAxis.Length > 0)
-            {
-                for (int i = 0; i < privateCustomXAxis.Length; i++)
-                {
-                    float x = padding + (i * width / (privateCustomXAxis.Length - 1));
-                    g.DrawString(privateCustomXAxis[i], Font, labelBrush, x - 20, padding + height + 5);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < xLabelsLong.Length; i++)
-                {
-                    float x = padding + (i * width / (xLabelsLong.Length - 1));
-                    if (ShortDates)
+                    for (int i = 0; i <= 5; i++)
                     {
-                        g.DrawString(xLabelsShort[i], Font, labelBrush, x - 20, padding + height + 5);
+                        float y = padding + height - (i * height / 5);
+                        g.DrawString($"{Math.Round(i * 20 * privateMaxValue / 100, 2)}%", Font, labelBrush, padding - 35, y - 7);
                     }
-                    else
+                }
+                else
+                {
+                    for (int i = 0; i <= 5; i++)
                     {
-                        g.DrawString(xLabelsLong[i], Font, labelBrush, x - 20, padding + height + 5);
+                        float y = padding + height - (i * height / 5);
+                        float value = i * privateMaxValue / 5;
+                        g.DrawString($"{Math.Round(value, 2)}", Font, labelBrush, padding - 35, y - 7);
+                    }
+                }
+
+                if (privateCustomXAxis.Length > 0)
+                {
+                    for (int i = 0; i < privateCustomXAxis.Length; i++)
+                    {
+                        float x = padding + (i * width / (privateCustomXAxis.Length - 1));
+                        g.DrawString(privateCustomXAxis[i], Font, labelBrush, x - 20, padding + height + 5);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < xLabelsLong.Length; i++)
+                    {
+                        float x = padding + (i * width / (xLabelsLong.Length - 1));
+                        if (ShortDates)
+                        {
+                            g.DrawString(xLabelsShort[i], Font, labelBrush, x - 20, padding + height + 5);
+                        }
+                        else
+                        {
+                            g.DrawString(xLabelsLong[i], Font, labelBrush, x - 20, padding + height + 5);
+                        }
                     }
                 }
             }
@@ -584,13 +573,15 @@ namespace CuoreUI.Controls.Charts
 
         private void InvalidatePopupRegion()
         {
-            SizeF textSize = CreateGraphics().MeasureString(popupText, Font);
+            SizeF textSize = TextRenderer.MeasureText(popupText, Font);
 
             RectangleF popupRect = new RectangleF(popupLocation.X - textSize.Width / 2, popupLocation.Y - textSize.Height - 10, textSize.Width, textSize.Height + 1);
             using (GraphicsPath popupPath = GeneralHelper.RoundRect(popupRect, (int)(popupRect.Height / 4)))
             {
-                Region roundedRegion = new Region(popupPath);
-                Invalidate(roundedRegion);
+                using (Region roundedRegion = new Region(popupPath))
+                {
+                    Invalidate(roundedRegion);
+                }
             }
         }
     }

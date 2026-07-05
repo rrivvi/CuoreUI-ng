@@ -30,6 +30,8 @@ namespace CuoreUI.Controls
             Padding = new Padding(12);
         }
 
+        public event EventHandler CheckedChanged;
+
         private DialogResult privateDialogResult = DialogResult.None;
 
         [Category("CuoreUI")]
@@ -42,7 +44,6 @@ namespace CuoreUI.Controls
             set
             {
                 privateDialogResult = value;
-                Invalidate();
             }
         }
 
@@ -57,7 +58,7 @@ namespace CuoreUI.Controls
             }
             set
             {
-                privateContent = value;
+                privateContent = value ?? string.Empty;
                 Invalidate();
             }
         }
@@ -220,7 +221,12 @@ namespace CuoreUI.Controls
             }
             set
             {
-                privateChecked = value;
+                if (privateChecked != value)
+                {
+                    privateChecked = value;
+                    CheckedChanged?.Invoke(this, EventArgs.Empty);
+                }
+
                 Invalidate();
             }
         }
@@ -311,7 +317,8 @@ namespace CuoreUI.Controls
             set
             {
                 privateOutlineThickness = Math.Max(value, 0);
-                privatePen.Width = value;
+                privatePen.Width = privateOutlineThickness;
+                Invalidate();
             }
         }
 
@@ -735,7 +742,11 @@ namespace CuoreUI.Controls
         protected override void OnMouseDown(MouseEventArgs e)
         {
             state = ButtonStates.Pressed;
+            Invalidate();
+        }
 
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
             if (privateDialogResult != DialogResult.None)
             {
                 Form parentForm = FindForm();
@@ -745,8 +756,7 @@ namespace CuoreUI.Controls
                 }
             }
 
-            Focus();
-            Invalidate();
+            base.OnMouseClick(e);
         }
 
         protected override void OnLostFocus(EventArgs e)
