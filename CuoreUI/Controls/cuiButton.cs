@@ -725,24 +725,30 @@ namespace CuoreUI.Controls
                 state = ButtonStates.Normal;
                 Invalidate();
             }
+
+            base.OnMouseUp(e);
         }
 
         protected override void OnMouseLeave(EventArgs e)
         {
             state = ButtonStates.Normal;
             Invalidate();
+            base.OnMouseLeave(e);
         }
 
         protected override void OnMouseEnter(EventArgs e)
         {
             state = ButtonStates.Hovered;
             Invalidate();
+            base.OnMouseEnter(e);
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
             state = ButtonStates.Pressed;
+            Focus();
             Invalidate();
+            base.OnMouseDown(e);
         }
 
         protected override void OnMouseClick(MouseEventArgs e)

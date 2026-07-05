@@ -690,23 +690,27 @@ namespace CuoreUI.Controls
             state = ButtonStates.Pressed;
             Focus();
             Invalidate();
+            base.OnMouseDown(e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
             UpdateState(ClientRectangle.Contains(e.Location), true);
+            base.OnMouseUp(e);
         }
 
         protected override void OnMouseLeave(EventArgs e)
         {
             state = ButtonStates.Normal;
             Invalidate();
+            base.OnMouseLeave(e);
         }
 
         protected override void OnMouseEnter(EventArgs e)
         {
             state = ButtonStates.Hovered;
             Invalidate();
+            base.OnMouseEnter(e);
         }
 
         private void UpdateState(bool isInside, bool updateGroup)
