@@ -59,10 +59,10 @@ namespace CuoreUI.Components
             }
         }
 
-        private float privateBlurAmount = 1.5f;
+        private int privateBlurAmount = 2;
 
         [Category("CuoreUI")]
-        public float BlurAmount
+        public int BlurAmount
         {
             get
             {

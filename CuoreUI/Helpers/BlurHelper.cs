@@ -10,7 +10,7 @@ namespace CuoreUI.Helpers
     {
         public static class QuadraticBlur
         {
-            public static unsafe void Apply(ref Bitmap bitmap, float radius)
+            public static unsafe void Apply(ref Bitmap bitmap, int radius)
             {
                 if (bitmap is null)
                     throw new ArgumentNullException(nameof(bitmap));
@@ -36,24 +36,24 @@ namespace CuoreUI.Helpers
                 }
             }
 
-            internal static unsafe void Apply24Bpp(ref Bitmap bitmap, float radius)
+            internal static unsafe void Apply24Bpp(ref Bitmap bitmap, int radius)
             {
                 ApplyCore(ref bitmap, radius, bytesPerPixel: 3, preserveAlpha: false);
             }
 
-            internal static unsafe void Apply32Bpp(ref Bitmap bitmap, float radius)
+            internal static unsafe void Apply32Bpp(ref Bitmap bitmap, int radius)
             {
                 ApplyCore(ref bitmap, radius, bytesPerPixel: 4, preserveAlpha: true);
             }
 
-            private static unsafe void ApplyCore(ref Bitmap bitmap, float radius, int bytesPerPixel, bool preserveAlpha)
+            private static unsafe void ApplyCore(ref Bitmap bitmap, int radius, int bytesPerPixel, bool preserveAlpha)
             {
                 int width = bitmap.Width;
                 int height = bitmap.Height;
                 if (width == 0 || height == 0)
                     return;
 
-                int halfKernel = (int)Math.Ceiling(radius);
+                int halfKernel = radius;
                 double radiusD = radius;
                 double invRadiusSq = 1.0 / (radiusD * radiusD);
                 double centerShift = halfKernel - radiusD;

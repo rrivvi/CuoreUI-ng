@@ -199,7 +199,7 @@ namespace CuoreUI.Helpers
             {
                 public static class QuadraticBlur
                 {
-                    public unsafe static void Apply(ref Bitmap bitmap, float radius)
+                    public unsafe static void Apply(ref Bitmap bitmap, int radius)
                     {
                         BlurHelper.QuadraticBlur.Apply(ref bitmap, radius);
                     }
