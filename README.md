@@ -2,7 +2,7 @@
 
 # ![hartui logo](https://i.imgur.com/thzDDEo.png) HartUI
 
-An unofficial but faithful continuation of the now-archived WinForms UI library [`HartUI.Winforms`](https://github.com/owtysm2/HartUI).
+An unofficial but faithful continuation of the now-archived WinForms UI library [`CuoreUI.Winforms`](https://github.com/owtysm2/CuoreUI).
 
 > [!TIP]
 > Don't be afraid to report problems or suggest new controls and components on the [![GitHub](https://i.imgur.com/rJ9l299.png) Issues](https://github.com/rrivvi/HartUI/issues) page!
