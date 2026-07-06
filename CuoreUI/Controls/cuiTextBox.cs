@@ -297,7 +297,7 @@ namespace CuoreUI.Controls
                 if (value.All >= 0 || value.All == -1)
                 {
                     privateBorderRadius = value;
-                    Invalidate();//Redraw control
+                    Invalidate();
                 }
             }
         }
@@ -458,7 +458,7 @@ namespace CuoreUI.Controls
 
             Padding = newPadding;
 
-            if (privateBorderRadius.All > 1 || privateBorderRadius.All == -1)//Rounded TextBox
+            if (privateBorderRadius.All > 1 || privateBorderRadius.All == -1) // Rounded
             {
                 g.SmoothingMode = SmoothingMode.AntiAlias;
                 e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
@@ -477,54 +477,58 @@ namespace CuoreUI.Controls
                 {
                     e.Graphics.FillPath(bgBrush, pathBorder);
 
-                    if (UnderlinedStyle) //Line Style
+                    if (UnderlinedStyle)
                     {
-                        //Draw border smoothing
+                        // Draw border smoothing
                         g.DrawPath(penBorderSmooth, pathBorderSmooth);
-                        //Draw border
 
                         RectangleF bounds = pathBorder.GetBounds();
-
-                        // Step 2: Define the clipping region for the bottom half
                         RectangleF bottomHalfBounds = new RectangleF(bounds.X + 1, bounds.Y + bounds.Height / 2, bounds.Width - 1, bounds.Height / 2 + 1);
 
-                        // Step 3: Create a region for the bottom half
                         using (Region bottomHalfRegion = new Region(bottomHalfBounds))
                         {
-                            // Step 4: Set the clipping region for the path
+                            // Set the clipping region for the path
                             g.SetClip(bottomHalfRegion, CombineMode.Intersect);
 
-                            // Step 5: Draw the path (only the bottom half)
+                            // Draw the bottom half
                             e.Graphics.PixelOffsetMode = PixelOffsetMode.Default;
                             g.DrawPath(penBorder, pathBorder);
 
-                            // Reset the clipping region (optional)
+                            // Reset the clipping region
                             g.ResetClip();
                         }
                     }
-                    else //Normal Style
+                    else // Normal
                     {
-                        //Draw border smoothing
+                        // Draw border smoothing
                         g.DrawPath(penBorderSmooth, pathBorderSmooth);
-                        //Draw border
+
                         g.DrawPath(penBorder, pathBorder);
                     }
                 }
             }
-            else //Square/Normal TextBox
+            else // Square/Normal TextBox
             {
-                //Draw border
+                // Draw border
                 using (Pen penBorder = new Pen(OutlineColor, OutlineThickness))
                 {
+                    Region?.Dispose();
                     Region = new Region(ClientRectangle);
+
                     penBorder.Alignment = System.Drawing.Drawing2D.PenAlignment.Inset;
                     if (privateIsFocused)
+                    {
                         penBorder.Color = FocusOutlineColor;
+                    }
 
-                    if (UnderlinedStyle) //Line Style
+                    if (UnderlinedStyle)
+                    {
                         g.DrawLine(penBorder, 0, Height - 1, Width, Height - 1);
-                    else //Normal Style
+                    }
+                    else // Normal
+                    {
                         g.DrawRectangle(penBorder, 0, 0, Width - 0.5F, Height - 0.5F);
+                    }
                 }
             }
 
@@ -551,16 +555,18 @@ namespace CuoreUI.Controls
                 });
 
                 // Create image attributes and set the color matrix
-                ImageAttributes imageAttributes = new ImageAttributes();
-                imageAttributes.SetColorMatrix(colorMatrix);
+                using (ImageAttributes imageAttributes = new ImageAttributes())
+                {
+                    imageAttributes.SetColorMatrix(colorMatrix);
 
-                // Draw the image with the tint
-                e.Graphics.DrawImage(
-                    privateImage,
-                    imageRectangle,
-                    0, 0, privateImage.Width, privateImage.Height,
-                    GraphicsUnit.Pixel,
-                    imageAttributes);
+                    // Draw the image with the tint
+                    e.Graphics.DrawImage(
+                        privateImage,
+                        imageRectangle,
+                        0, 0, privateImage.Width, privateImage.Height,
+                        GraphicsUnit.Pixel,
+                        imageAttributes);
+                }
             }
 
             base.OnPaint(e);
