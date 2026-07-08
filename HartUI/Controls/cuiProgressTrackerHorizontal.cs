@@ -13,7 +13,7 @@ namespace HartUI.Controls
         public cuiProgressTrackerHorizontal()
         {
             InitializeComponent();
-            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.ResizeRedraw, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.ResizeRedraw | ControlStyles.OptimizedDoubleBuffer, true);
             Size = new Size(480, 36);
         }
 
@@ -43,8 +43,11 @@ namespace HartUI.Controls
             }
             set
             {
-                privateTasksProgress = value;
-                Invalidate();
+                if (privateTasksProgress != value)
+                {
+                    privateTasksProgress = value;
+                    Invalidate();
+                }
             }
         }
 

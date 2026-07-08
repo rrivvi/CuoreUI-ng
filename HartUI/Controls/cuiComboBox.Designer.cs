@@ -1,4 +1,6 @@
-﻿namespace HartUI.Controls
+﻿using HartUI.Misc.Internal;
+
+namespace HartUI.Controls
 {
     partial class cuiComboBox
     {
@@ -16,6 +18,9 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                isBrowsingOptions = false;
+                PreloadedForms.ComboBoxDropDownForm.LostFocus -= ComboBoxDropDownForm_LostFocus;
+                PreloadedForms.ComboBoxDropDownForm.SelectedItemChanged -= DropDown_SelectedItemChanged;
             }
             base.Dispose(disposing);
         }
