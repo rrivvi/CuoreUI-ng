@@ -493,12 +493,6 @@ namespace HartUI.Helpers
             w2 = ((c.Y - a.Y) * (p.X - c.X) + (a.X - c.X) * (p.Y - c.Y)) * invDenom;
             w3 = 1f - w1 - w2;
         }
-
-        public static (float X, float Y, float Z) BarycentricCoords(PointF p, PointF a, PointF b, PointF c)
-        {
-            BarycentricCoords(p, a, b, c, out float x, out float y, out float z);
-            return (x, y, z);
-        }
     }
 }
 

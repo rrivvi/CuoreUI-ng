@@ -252,6 +252,7 @@ namespace HartUI.Controls
         }
         #endregion
 
+        double lastValidHue = 0;
         double previouslyPaintedHue = 0;
         double privateHue = 0;
         double privateSaturation = 0;
@@ -398,7 +399,18 @@ namespace HartUI.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            ColorToHSV(privateContent, out privateHue, out privateSaturation, out privateValue);
+
+            ColorToHSV(privateContent, out double h, out double s, out double v);
+
+            privateHue = h;
+            privateSaturation = s;
+            privateValue = v;
+
+            if (s > 0.0001)
+            {
+                lastValidHue = h;
+            }
+
             UpdateClickedRectangleFromColor();
         }
 
@@ -421,13 +433,23 @@ namespace HartUI.Controls
                 }
                 else
                 {
-                    float newHue = value.GetHue();
-                    if (oldHue != newHue)
+                    ColorToHSV(value, out double h, out double s, out double v);
+
+                    // When the value is extreme (near black or near white),
+                    // the HSV conversion loses accuracy. This ensures the hue
+                    // doesn't go crazy when that's the case
+                    if (s > 0.0001)
                     {
-                        privateHue = newHue;
-                        privateHueBitmap?.Dispose();
-                        privateHueBitmap = null;
+                        privateHue = h;
+                        lastValidHue = h;
                     }
+                    else
+                    {
+                        privateHue = lastValidHue;
+                    }
+
+                    privateSaturation = s;
+                    privateValue = v;
 
                     // if color changes, but mouse is not over this wheel, fire the SelectedColor event
                     // (means the color was changed programatically, and not by the user)
@@ -506,13 +528,27 @@ namespace HartUI.Controls
                 {
                     float dx = e.X - center.X;
                     float dy = e.Y - center.Y;
-                    float angle = (float)(Math.Atan2(dy, dx) * 180.0 / Math.PI);
-                    if (angle < 0) angle += 360;
+                    double angle = Math.Atan2(dy, dx) * RadToDeg;
+                    if (angle < 0)
+                    {
+                        angle += 360;
+                    }
 
-                    privateHue = (int)angle;
+                    privateHue = angle;
+                    lastValidHue = angle;
                     privateTriangleBitmap?.Dispose();
                     privateTriangleBitmap = null;
-                    Content = ColorFromHSV(privateHue, privateSaturation, privateValue, currentAlpha);
+
+                    // Content recalculates hsv, which can destroy hue
+                    // when saturation or value are extreme (near black or near white)
+                    privateContent = ColorFromHSV(
+                        privateHue,
+                        privateSaturation,
+                        privateValue,
+                        currentAlpha);
+
+                    ContentChanged?.Invoke(this, EventArgs.Empty);
+                    Invalidate();
                 }
 
                 // changing saturation or value (triangle)
@@ -530,22 +566,23 @@ namespace HartUI.Controls
                         p = ClosestPointOnTriangle(p, p1, p2, p3);
                     }
 
-                    var bary = BarycentricCoords(p, p1, p2, p3);
+                    BarycentricCoords(p, p1, p2, p3, out float w1, out float w2, out float w3);
 
-                    //
+                    privateSaturation = w1;
+                    privateValue = w1 + w2;
 
                     clickRectangle.X = (int)p.X - 4;
                     clickRectangle.Y = (int)p.Y - 4;
 
-                    //
-
-                    privateSaturation = bary.X;
-                    privateValue = bary.X + bary.Y;
-
                     // don't replace privateContent with Content
                     // Content calculates new hue values with GetHue,
                     // but we don't want to change the hue while the user is changing the saturation and value
-                    privateContent = ColorFromHSV(privateHue, privateSaturation, privateValue, currentAlpha);
+                    privateContent = ColorFromHSV(
+                        privateHue,
+                        privateSaturation,
+                        privateValue,
+                        currentAlpha);
+
                     ContentChanged?.Invoke(this, EventArgs.Empty);
                     Invalidate();
                 }
