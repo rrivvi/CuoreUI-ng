@@ -2,14 +2,23 @@
 
 # ![hartui logo](https://i.imgur.com/thzDDEo.png) HartUI
 
-An unofficial but faithful continuation of the now-archived WinForms UI library [`CuoreUI.Winforms`](https://github.com/owtysm2/CuoreUI).
+A completely Free Winforms UI Library based on the now-archived [`CuoreUI.Winforms`](https://github.com/owtysm2/CuoreUI).
 
 > [!TIP]
 > Don't be afraid to report problems or suggest new controls and components on the [![GitHub](https://i.imgur.com/rJ9l299.png) Issues](https://github.com/rrivvi/HartUI/issues) page!
 
 ---
 
-## 🔧 Installation
+# ![cui-32x](https://i.imgur.com/PHRIIbS.png) Migrating from CuoreUI?
+
+HartUI is based on **CuoreUI.Winforms**. Most projects should require only a few changes to migrate.
+
+1. Uninstall the `CuoreUI.Winforms` NuGet package.
+2. Install `HartUI.Winforms`.
+3. Replace `CuoreUI` namespace mentions with `HartUI`. (In most cases, **Find & Replace** will work just fine)
+4. Rebuild your project.
+
+# 🔧 Installation
 
 ### ![NuGet logo](https://i.imgur.com/6aPyVAg.png) NuGet
 
@@ -30,14 +39,14 @@ Follow the step-by-step guide:
 
 ---
 
-## 📜 Documentation
+# 📜 Documentation
 
 > [!NOTE]
 > No documentation for the foreseeable future. The library is intuitive enough that you should know your way around if you've worked with frameworks like GunaUI or SiticoneUI before.
 
 ---
 
-## 📅 Versioning
+# 📅 Versioning
 
 We use CalVer.
 
