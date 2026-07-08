@@ -228,8 +228,8 @@ namespace HartUI.Controls
 
                         if (TryBarycentricCoords(p, pHue, pWhite, pBlack, out float w1, out float w2, out float w3))
                         {
-                            double saturation = w1;
                             double value = w1 + w2;
+                            double saturation = value > 0.0 ? w1 / value : 0.0;
 
                             HsvToArgb(hue, saturation, value, 255, out int argb);
                             pixels[row + x] = argb;
@@ -487,9 +487,9 @@ namespace HartUI.Controls
 
             ColorToHSV(privateContent, out double h, out double s, out double v);
 
-            double w1 = s;
-            double w2 = v - s;
-            double w3 = 1.0 - w1 - w2;
+            double w1 = s * v;              // towards pHue
+            double w2 = v * (1.0 - s);      // towards pWhite
+            double w3 = 1.0 - v;            // towards pBlack
 
             float x = (float)(w1 * pHue.X + w2 * pWhite.X + w3 * pBlack.X);
             float y = (float)(w1 * pHue.Y + w2 * pWhite.Y + w3 * pBlack.Y);
@@ -568,8 +568,8 @@ namespace HartUI.Controls
 
                     BarycentricCoords(p, p1, p2, p3, out float w1, out float w2, out float w3);
 
-                    privateSaturation = w1;
                     privateValue = w1 + w2;
+                    privateSaturation = privateValue > 0.0 ? w1 / privateValue : 0.0;
 
                     clickRectangle.X = (int)p.X - 4;
                     clickRectangle.Y = (int)p.Y - 4;
