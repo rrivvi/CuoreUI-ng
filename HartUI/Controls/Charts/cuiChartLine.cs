@@ -14,7 +14,7 @@ namespace HartUI.Controls.Charts
         public cuiChartLine()
         {
             InitializeComponent();
-            this.MouseMove += new MouseEventHandler(OnMouseMove);
+            this.MouseMove += OnMouseMove;
             DoubleBuffered = true;
             Font = new Font("Microsoft Yahei UI", 8.25f);
         }

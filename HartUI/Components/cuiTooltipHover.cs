@@ -11,7 +11,6 @@ namespace HartUI.Components
     [Description("Show a tooltip when hovering over a specific control")]
     public partial class cuiTooltipHover : Component
     {
-        private TooltipForm tooltipForm => TooltipController.tooltipForm;
         public cuiTooltipHover()
         {
             InitializeComponent();
@@ -80,11 +79,11 @@ namespace HartUI.Components
         {
             get
             {
-                return tooltipForm.ForeColor;
+                return TooltipController.tooltipForm.ForeColor;
             }
             set
             {
-                tooltipForm.ForeColor = value;
+                TooltipController.tooltipForm.ForeColor = value;
             }
         }
 
@@ -93,21 +92,21 @@ namespace HartUI.Components
         {
             get
             {
-                return tooltipForm.BackColor;
+                return TooltipController.tooltipForm.BackColor;
             }
             set
             {
-                tooltipForm.BackColor = value;
+                TooltipController.tooltipForm.BackColor = value;
             }
         }
 
         private async void MouseHover(object sender, System.EventArgs e)
         {
-            tooltipForm.Text = privateContent;
+            TooltipController.tooltipForm.Text = privateContent;
 
-            tooltipForm.Location = Cursor.Position - new Size((tooltipForm.Width / 2), -1);
+            TooltipController.tooltipForm.Location = Cursor.Position - new Size((TooltipController.tooltipForm.Width / 2), -1);
 
-            ToggleFormVisibilityWithoutActivating(tooltipForm, true);
+            ToggleFormVisibilityWithoutActivating(TooltipController.tooltipForm, true);
 
             while (true)
             {
@@ -121,29 +120,29 @@ namespace HartUI.Components
 
                 if (TooltipPosition == Position.Custom)
                 {
-                    offset = new Size((tooltipForm.Width / 2), -1);
+                    offset = new Size((TooltipController.tooltipForm.Width / 2), -1);
                 }
                 else if (TooltipPosition == Position.Top)
                 {
-                    offset = new Size((tooltipForm.Width / 2), 32);
+                    offset = new Size((TooltipController.tooltipForm.Width / 2), 32);
                 }
                 else if (TooltipPosition == Position.Left)
                 {
-                    offset = new Size(tooltipForm.Width, tooltipForm.Height / 2);
+                    offset = new Size(TooltipController.tooltipForm.Width, TooltipController.tooltipForm.Height / 2);
                 }
                 else if (TooltipPosition == Position.Right)
                 {
-                    offset = new Size(0, tooltipForm.Height / 2);
+                    offset = new Size(0, TooltipController.tooltipForm.Height / 2);
                 }
                 else if (TooltipPosition == Position.Bottom)
                 {
-                    offset = new Size((tooltipForm.Width / 2), -24);
+                    offset = new Size((TooltipController.tooltipForm.Width / 2), -24);
                 }
 
-                tooltipForm.Location = Cursor.Position - offset + privatePositionOffset;
+                TooltipController.tooltipForm.Location = Cursor.Position - offset + privatePositionOffset;
             }
 
-            ToggleFormVisibilityWithoutActivating(tooltipForm, false);
+            ToggleFormVisibilityWithoutActivating(TooltipController.tooltipForm, false);
         }
 
         private static void ToggleFormVisibilityWithoutActivating(Form form, bool show)

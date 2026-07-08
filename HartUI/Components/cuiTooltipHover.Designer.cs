@@ -16,6 +16,10 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                if (privateTargetControl != null)
+                {
+                    privateTargetControl.MouseHover -= MouseHover;
+                }
             }
             base.Dispose(disposing);
         }

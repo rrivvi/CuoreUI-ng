@@ -16,6 +16,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                MouseMove -= OnMouseMove;
             }
             base.Dispose(disposing);
         }

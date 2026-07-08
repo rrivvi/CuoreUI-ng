@@ -432,7 +432,7 @@ namespace HartUI.Controls
 
                 if (DesignMode)
                 {
-                    ColorToHSV(value, out privateHue, out _, out _);
+                    ColorToHSV(value, out privateHue, out privateSaturation, out privateValue);
                 }
                 else
                 {
@@ -482,7 +482,8 @@ namespace HartUI.Controls
             PointF pWhite = trianglePoints[1];
             PointF pBlack = trianglePoints[2];
 
-            ColorToHSV(privateContent, out double h, out double s, out double v);
+            double s = privateSaturation;
+            double v = privateValue;
 
             double w1 = s * v;              // towards pHue
             double w2 = v * (1.0 - s);      // towards pWhite
@@ -597,6 +598,8 @@ namespace HartUI.Controls
             {
                 colorPickerState = ColorPickerStates.Idle;
             }
+
+            OnMouseMove(e);
         }
 
         [Category("HartUI")]
