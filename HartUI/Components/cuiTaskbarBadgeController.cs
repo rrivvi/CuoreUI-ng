@@ -55,42 +55,38 @@ namespace HartUI.Components
             get => privateImage;
             set
             {
-                if (privateImage != null)
+                privateImage?.Dispose();
+                privateImage = null;
+
+                if (value != null)
                 {
-                    privateImage.Dispose();
-                    privateImage = null;
+                    if (value.Width == 16 && value.Height == 16)
+                    {
+                        privateImage = new Bitmap(value);
+                    }
+                    else
+                    {
+                        Bitmap resizedBitmap = new Bitmap(16, 16);
+
+                        using (Graphics g = Graphics.FromImage(resizedBitmap))
+                        {
+                            g.InterpolationMode = InterpolationMode.Low;
+                            g.DrawImage(value, 0, 0, 16, 16);
+                        }
+
+                        privateImage = resizedBitmap;
+                    }
                 }
 
-                if (value == null || (value.Width == 16 && value.Height == 16))
+                if (!DesignMode)
                 {
-                    privateImage = value;
-
-                    if (Image != null && !DesignMode)
+                    if (privateImage != null)
                     {
                         SetOverlayIcon(privateImage, privateDescription);
                     }
-                    else if (Image == null)
+                    else
                     {
                         ClearOverlayIcon();
-                    }
-                }
-                else
-                {
-                    Image resizedBitmap = new Bitmap(16, 16);
-
-                    using (Graphics g = Graphics.FromImage(resizedBitmap))
-                    {
-                        // Set the interpolation mode to high quality for better resizing
-                        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
-                        g.DrawImage(value, 0, 0, 16, 16);
-                    }
-
-                    value?.Dispose();
-                    privateImage = resizedBitmap;
-
-                    if (Image != null && !DesignMode)
-                    {
-                        SetOverlayIcon(privateImage, privateDescription);
                     }
                 }
             }
@@ -125,22 +121,29 @@ namespace HartUI.Components
 
         private void SetOverlayIcon(Image inputImage, string description)
         {
-            if (TaskbarManager.IsPlatformSupported && TargetForm != null && TargetForm.IsDisposed == false)
+            if (!TaskbarManager.IsPlatformSupported ||
+                TargetForm == null ||
+                TargetForm.IsDisposed ||
+                inputImage == null)
             {
-                using (MemoryStream ms = new MemoryStream())
+                return;
+            }
+
+            using (Bitmap bitmap = new Bitmap(inputImage))
+            {
+                IntPtr hIcon = bitmap.GetHicon();
+
+                try
                 {
-                    inputImage.Save(ms, ImageFormat.Png);
-                    using (var iconBitmap = new Bitmap(ms))
+                    using (Icon icon = Icon.FromHandle(hIcon))
+                    using (Icon clonedIcon = (Icon)icon.Clone())
                     {
-                        IntPtr hIcon = iconBitmap.GetHicon();
-                        using (var icon = Icon.FromHandle(hIcon))
-                        {
-                            var clonedIcon = (Icon)icon.Clone();
-                            TaskbarManager.Instance.SetOverlayIcon(TargetForm.Handle, clonedIcon, description);
-                            clonedIcon.Dispose();
-                        }
-                        DestroyIcon(hIcon);
+                        TaskbarManager.Instance.SetOverlayIcon(TargetForm.Handle, clonedIcon, description);
                     }
+                }
+                finally
+                {
+                    DestroyIcon(hIcon);
                 }
             }
         }
@@ -191,8 +194,19 @@ namespace HartUI.Components
         [Category("HartUI")]
         public Color NumericForeColor { get; set; } = Color.White;
 
+        private Font privateNumericFont = new Font("Microsoft YaHei UI", 8, FontStyle.Bold);
+
         [Category("HartUI")]
-        public Font NumericFont { get; set; } = new Font("Microsoft YaHei UI", 8, FontStyle.Bold);
+        public Font NumericFont
+        {
+            get => privateNumericFont;
+
+            set
+            {
+                privateNumericFont?.Dispose();
+                privateNumericFont = value;
+            }
+        }
 
         private Image GenerateDynamicNumericBadge()
         {

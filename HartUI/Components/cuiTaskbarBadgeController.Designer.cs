@@ -13,11 +13,25 @@
         /// <param name="disposing">prawda, jeżeli zarządzane zasoby powinny zostać zlikwidowane; Fałsz w przeciwnym wypadku.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                ClearOverlayIcon();
+
+                if (privateTargetForm != null)
+                {
+                    privateTargetForm.Shown -= PrivateTargetForm_Shown;
+                    privateTargetForm = null;
+                }
+
                 privateImage?.Dispose();
+                privateImage = null;
+
+                privateNumericFont?.Dispose();
+                privateNumericFont = null;
+
+                components?.Dispose();
             }
+
             base.Dispose(disposing);
         }
 

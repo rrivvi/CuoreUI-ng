@@ -16,6 +16,11 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+
+                if (privateTargetForm != null)
+                {
+                    privateTargetForm.Shown -= TargetForm_Shown;
+                }
             }
             base.Dispose(disposing);
         }
