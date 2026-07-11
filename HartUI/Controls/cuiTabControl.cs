@@ -12,7 +12,8 @@ namespace HartUI.Controls
     public partial class cuiTabControl : UserControl
     {
         private bool hoveringInteractive = false;
-        public List<TabPage> Pages = new List<TabPage>();
+        public List<TabPage> pages = new List<TabPage>();
+        public IReadOnlyList<TabPage> Pages => pages;
         private int _selectedIndex = -1;
 
         private bool privateShowPlus = true;
@@ -146,18 +147,86 @@ namespace HartUI.Controls
             set { namingConvention = value ?? "TabPage"; }
         }
 
+        public int Count => pages.Count;
+
         public string GetUniqueTabName()
         {
             int i = 1;
             while (true)
             {
                 string name = $"{namingConvention}{i}";
-                if (!Pages.Exists(p => p.Title == name))
+                if (!pages.Exists(p => p.Title == name))
                 {
                     return name;
                 }
                 i++;
             }
+        }
+
+        public void ClearTabs()
+        {
+            while (pages.Count > 0)
+            {
+                RemoveTab(pages.Count - 1);
+            }
+        }
+
+        public bool RemoveTab(TabPage page)
+        {
+            if (page == null)
+            {
+                return false;
+            }
+
+            int index = pages.IndexOf(page);
+
+            if (index < 0)
+            {
+                return false;
+            }
+
+            RemoveTab(index);
+            return true;
+        }
+
+        public bool Contains(TabPage page)
+        {
+            return pages.Contains(page);
+        }
+
+        public int IndexOf(TabPage page)
+        {
+            return pages.IndexOf(page);
+        }
+
+        public TabPage AddTab(string title, Control content)
+        {
+            TabPage page = AddTab(title);
+
+            content.Dock = DockStyle.Fill;
+            page.Controls.Add(content);
+
+            return page;
+        }
+
+        public TabPage AddTab(string title, Bitmap image, Control content, bool disposeImage = false)
+        {
+            TabPage page = AddTab(title, image, disposeImage);
+
+            content.Dock = DockStyle.Fill;
+            page.Controls.Add(content);
+
+            return page;
+        }
+
+        public bool RemoveSelectedTab()
+        {
+            if (SelectedTab == null)
+            {
+                return false;
+            }
+
+            return RemoveTab(SelectedTab);
         }
 
         public TabPage AddTab(Bitmap image, bool DisposeImageOnDisposal = false) => AddTab(GetUniqueTabName(), image, DisposeImageOnDisposal);
@@ -176,7 +245,7 @@ namespace HartUI.Controls
             page.Width = Width;
             page.Top = TabHeight + ScrollbarHeight;
             page.BackColor = BackColor;
-            Pages.Add(page);
+            pages.Add(page);
             TabAdded?.Invoke(this, new TabAddedEventArgs(page));
 
             if (_selectedIndex == -1)
@@ -197,18 +266,24 @@ namespace HartUI.Controls
         public void RemoveTab(int index)
         {
             if (index < 0 || index >= Pages.Count)
-            {
                 return;
-            }
 
+            TabPage page = Pages[index];
             bool removedSelected = index == _selectedIndex;
 
-            Pages.RemoveAt(index);
+            if (Controls.Contains(page))
+            {
+                Controls.Remove(page);
+            }
+
+            pages.RemoveAt(index);
+
+            page.Dispose();
+
             TabRemoved?.Invoke(this, index);
 
             if (Pages.Count == 0)
             {
-                Controls.Clear();
                 _selectedIndex = -1;
             }
             else if (removedSelected)
@@ -240,12 +315,12 @@ namespace HartUI.Controls
 
         public void SelectTab(TabPage page)
         {
-            if (!Pages.Contains(page))
+            if (!pages.Contains(page))
             {
                 return;
             }
 
-            SelectTab(Pages.IndexOf(page));
+            SelectTab(pages.IndexOf(page));
         }
 
         public Size ImageExpand { get; set; } = new Size(-4, -4);
@@ -758,10 +833,13 @@ namespace HartUI.Controls
 
         protected override void Dispose(bool disposing)
         {
-            if (DisposeImageOnDisposal)
+            if (disposing)
             {
-                Image?.Dispose();
-                Image = null;
+                if (DisposeImageOnDisposal)
+                {
+                    Image?.Dispose();
+                    Image = null;
+                }
             }
 
             base.Dispose(disposing);

@@ -14,7 +14,6 @@ namespace HartUI.Controls.Charts
         public cuiChartLine()
         {
             InitializeComponent();
-            this.MouseMove += OnMouseMove;
             DoubleBuffered = true;
             Font = new Font("Microsoft Yahei UI", 8.25f);
         }
@@ -518,7 +517,7 @@ namespace HartUI.Controls.Charts
             }
         }
 
-        private void OnMouseMove(object sender, MouseEventArgs e)
+        protected override void OnMouseMove(MouseEventArgs e)
         {
             var data = privateDataPoints;
             int count = data?.Length ?? 0;
@@ -569,6 +568,8 @@ namespace HartUI.Controls.Charts
                 showPopup = false;
                 InvalidatePopupRegion();
             }
+
+            base.OnMouseMove(e);
         }
 
         private void InvalidatePopupRegion()

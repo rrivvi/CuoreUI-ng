@@ -1,6 +1,6 @@
 ﻿namespace HartUI.Controls.Internal
 {
-    partial class DigitsOnlyTextBox
+    partial class DigitsOnlyFormattedTextBox
     {
         /// <summary> 
         /// Required designer variable.

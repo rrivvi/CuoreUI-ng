@@ -8,8 +8,15 @@
         {
             if (disposing && (components != null))
             {
-                components.Dispose();
+                foreach (TabPage page in pages)
+                {
+                    page.Dispose();
+                }
+
+                pages.Clear();
+                components?.Dispose();
             }
+
             base.Dispose(disposing);
         }
 

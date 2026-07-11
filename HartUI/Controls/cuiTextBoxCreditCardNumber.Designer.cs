@@ -15,6 +15,8 @@
         {
             if (disposing && (components != null))
             {
+                Load -= OnLoad;
+                GotFocus -= OnLoad;
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -30,7 +32,7 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.placeholderTextField = new System.Windows.Forms.TextBox();
-            this.contentTextField = new HartUI.Controls.Internal.DigitsOnlyTextBox();
+            this.contentTextField = new HartUI.Controls.Internal.DigitsOnlyFormattedTextBox();
             this.SuspendLayout();
             // 
             // panel1
@@ -93,6 +95,6 @@
         #endregion
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox placeholderTextField;
-        internal Controls.Internal.DigitsOnlyTextBox contentTextField;
+        internal Controls.Internal.DigitsOnlyFormattedTextBox contentTextField;
     }
 }

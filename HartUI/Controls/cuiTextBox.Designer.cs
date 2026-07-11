@@ -21,6 +21,8 @@
             {
                 if ((components != null))
                 {
+                    Load -= OnLoad;
+                    GotFocus -= OnLoad;
                     components.Dispose();
                 }
             }
