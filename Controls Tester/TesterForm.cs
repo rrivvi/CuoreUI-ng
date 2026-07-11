@@ -71,6 +71,9 @@ namespace ControlsTester
                 }
             }
 
+            controlsNames.Sort();
+            componentsNames.Sort();
+
             AllClassesLoaded();
         }
 
@@ -130,28 +133,29 @@ namespace ControlsTester
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Form a = new Form() { Height = 512 + 72 };
-
-            var controlsListBox = new RichTextBox() { ReadOnly = true, Height = 256, Top = 16, Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right, Width = a.Width - 16, ScrollBars = RichTextBoxScrollBars.Vertical };
-            var componentsListBox = new RichTextBox() { ReadOnly = true, Height = 256, Top = 16 + 256 + 16, Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right, Width = a.Width - 16, ScrollBars = RichTextBoxScrollBars.Vertical };
-
-            a.Controls.Add(new Label() { Text = "CONTROLS", Height = 16 });
-            a.Controls.Add(controlsListBox);
-
-            a.Controls.Add(new Label() { Text = "COMPONENTS", Height = 16, Top = 16 + 256 });
-            a.Controls.Add(componentsListBox);
-
-            foreach (string controlName in controlsNames)
+            using (Form a = new Form() { Height = 512 + 72 })
             {
-                controlsListBox.AppendText($"{controlName}\n");
-            }
+                var controlsListBox = new RichTextBox() { ReadOnly = true, Height = 256, Top = 16, Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right, Width = a.Width - 16, ScrollBars = RichTextBoxScrollBars.Vertical };
+                var componentsListBox = new RichTextBox() { ReadOnly = true, Height = 256, Top = 16 + 256 + 16, Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right, Width = a.Width - 16, ScrollBars = RichTextBoxScrollBars.Vertical };
 
-            foreach (string componentName in componentsNames)
-            {
-                componentsListBox.AppendText($"{componentName}\n");
-            }
+                a.Controls.Add(new Label() { Text = "CONTROLS", Height = 16 });
+                a.Controls.Add(controlsListBox);
 
-            a.Show();
+                a.Controls.Add(new Label() { Text = "COMPONENTS", Height = 16, Top = 16 + 256 });
+                a.Controls.Add(componentsListBox);
+
+                foreach (string controlName in controlsNames)
+                {
+                    controlsListBox.AppendText($"{controlName}\n");
+                }
+
+                foreach (string componentName in componentsNames)
+                {
+                    componentsListBox.AppendText($"{componentName}\n");
+                }
+
+                a.ShowDialog();
+            }
         }
     }
 
