@@ -50,6 +50,7 @@ namespace HartUI.Components
                         privateTargetForm.Activated -= TargetForm_Activated;
                         privateTargetForm.HandleCreated -= TargetForm_HandleCreated;
                         privateTargetForm.ResizeEnd -= TargetForm_ResizeEnd;
+                        privateTargetForm.BackColorChanged -= TargetForm_BackColorChanged; 
                     }
                 }
 
@@ -75,6 +76,7 @@ namespace HartUI.Components
                 TargetForm.Activated += TargetForm_Activated;
                 TargetForm.HandleCreated += TargetForm_HandleCreated;
                 TargetForm.ResizeEnd += TargetForm_ResizeEnd;
+                privateTargetForm.BackColorChanged += TargetForm_BackColorChanged;
 
                 if (roundedFormObj != null && roundedFormObj.IsDisposed == false && !DesignMode) // if for some reason you want to toggle between a form and 'null'
                 {
@@ -93,6 +95,30 @@ namespace HartUI.Components
 
         private void TargetForm_ResizeEnd(object sender, EventArgs e)
         {
+            UpdateExperimentalBitmap();
+        }
+
+        private void TargetForm_BackColorChanged(object sender, EventArgs e)
+        {
+            if (roundedFormObj != null && !roundedFormObj.IsDisposed)
+            {
+                // Bitmap creation and application takes time
+                // so in the meantime hide the form
+                // so that there is no delay
+                roundedFormObj.Visible = false;
+
+                experimentalBitmap?.Dispose();
+                experimentalBitmap = null;
+                roundedFormObj.UpdBitmap();
+
+                // Instead of a temporary variable, get the
+                // value of Visible from the TargetForm itself
+                if (TargetForm != null && !TargetForm.IsDisposed)
+                {
+                    roundedFormObj.Visible = TargetForm.Visible;
+                }
+            }
+
             UpdateExperimentalBitmap();
         }
 
@@ -462,11 +488,14 @@ namespace HartUI.Components
                 return;
             }
 
+            // At this point: TargetForm exists, roundedFormObj exists
+
+            experimentalBitmap?.Dispose();
+            experimentalBitmap = null;
+            roundedFormObj.UpdBitmap();
+
             if (Rounding == 0)
             {
-                experimentalBitmap?.Dispose();
-                experimentalBitmap = null;
-                roundedFormObj.UpdBitmap();
                 return;
             }
 
@@ -481,9 +510,7 @@ namespace HartUI.Components
                 TargetForm.DrawToBitmap(newBitmap, new Rectangle(0, 0, TargetForm.Width, TargetForm.Height));
             }
 
-            experimentalBitmap?.Dispose();
             experimentalBitmap = newBitmap;
-
             roundedFormObj.UpdBitmap(newBitmap);
         }
 

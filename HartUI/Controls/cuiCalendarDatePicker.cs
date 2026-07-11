@@ -38,7 +38,7 @@ namespace HartUI.Controls
             }
         }
 
-        private bool privateEnableThemeChangeButton = true;
+        private bool privateEnableThemeChangeButton = false;
 
         [Category("HartUI")]
         [Description("Lets the user toggle the theme between Light and Dark with a button.")]
@@ -76,7 +76,7 @@ namespace HartUI.Controls
         [Category("HartUI")]
         public Position PickerPosition { get; set; } = Position.Bottom;
 
-        public void ShowDialog()
+        internal void ShowDialog()
         {
             if (isDialogVisible)
             {

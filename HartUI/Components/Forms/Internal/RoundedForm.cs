@@ -262,6 +262,7 @@ namespace HartUI.Components.Forms
 
         internal void UpdBitmap()
         {
+            Region?.Dispose();
             targetFormBt?.Dispose();
             backgroundImageTextureBrush?.Image?.Dispose();
             backgroundImageTextureBrush?.Dispose();

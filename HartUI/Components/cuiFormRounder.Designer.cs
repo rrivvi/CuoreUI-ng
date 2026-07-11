@@ -17,6 +17,19 @@ namespace HartUI.Components
         {
             if (disposing)
             {
+                if (privateTargetForm != null)
+                {
+                    privateTargetForm.Load -= TargetForm_Load;
+                    privateTargetForm.Resize -= TargetForm_Resize;
+                    privateTargetForm.LocationChanged -= TargetForm_LocationChanged;
+                    privateTargetForm.FormClosing -= TargetForm_FormClosing;
+                    privateTargetForm.VisibleChanged -= TargetForm_VisibleChanged;
+                    privateTargetForm.Activated -= TargetForm_Activated;
+                    privateTargetForm.HandleCreated -= TargetForm_HandleCreated;
+                    privateTargetForm.ResizeEnd -= TargetForm_ResizeEnd;
+                    privateTargetForm.BackColorChanged -= TargetForm_BackColorChanged;
+                }
+
                 TargetForm = null;
 
                 if (tenFramesDrawnHandler != null)
