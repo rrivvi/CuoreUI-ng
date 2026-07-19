@@ -38,11 +38,10 @@ Follow the step-by-step guide:
 ---
 
 # 📜 Documentation
-
-> No full-fledged documentation for the foreseeable future. The library is intuitive enough that you should know your way around if you've worked with frameworks like GunaUI or SiticoneUI before.
+Read the Documentation: [hartui.netlify.app/docs/](https://hartui.netlify.app/docs/)
 
 > [!NOTE]
-> If you still want to see the documentation, it's available on the forked website: [hartui.netlify.app/docs](https://hartui.netlify.app/docs)
+> The documentation only mentions the most important properties of each control, component, and public helper. 
 
 ---
 
